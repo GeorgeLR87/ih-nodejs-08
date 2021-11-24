@@ -29,6 +29,20 @@ exports.register = async (req, res) => {
 		return
 	}
 
+	// => B) VALIDACIÓN - FORTALECIMIENTO DE PASSWORD
+	// VERIFIQUE QUE EL PASSWORD TENGA 6 CARACTERES, 
+	// MÍNIMO UN NÚMERO Y UNA MAYÚSCULA.
+	// REGEX - CONJUNTO DE REGLAS QUE AUDITAN UN TEXTO PLANO
+	const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/
+
+	if(!regex.test(password)){
+		res.render("auth/signup", {
+			errorMessage: "Tu password debe de contener 6 caracteres, mínimo un número y una mayúscula."
+		})		
+
+        return
+	}
+
 
 	// 2. ENCRIPTACIÓN DE PASSWORD 🚩🚩🚩
 	const salt = await bcryptjs.genSalt(10)
